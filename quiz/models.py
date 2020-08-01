@@ -4,6 +4,8 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 from django.template.defaultfilters import slugify
 
+from sections.models import SectionSubjectFaculty
+
 
 User = get_user_model()
 
@@ -14,7 +16,7 @@ class Subject(models.Model):
 		return self.name
 
 class Quiz(models.Model):
-	subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+	section = models.ForeignKey(SectionSubjectFaculty, on_delete=models.CASCADE)
 	name = models.CharField(max_length=50)
 	description = models.TextField()
 	slug = models.SlugField()

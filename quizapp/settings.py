@@ -1,4 +1,3 @@
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,8 +26,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    "sections",
     "nested_admin",
-    # "accounts",
+    
+    "accounts",
     "quiz"
 
 ]
@@ -43,7 +44,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+AUTH_USER_MODEL = "accounts.User"
 
 
 ROOT_URLCONF = 'quizapp.urls'
