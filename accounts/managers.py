@@ -50,14 +50,18 @@ class UserManager(BaseUserManager):
 		return self._create_user(name, email, password, regdno, department, **extras)
 
 	def create_superuser(self, name, email, password, regdno, department, **extras):
-		extras.setdefault("is_staff", True)
-		extras.setdefault("is_hod", True)
-		extras.setdefault("is_active", False)
-		extras.setdefault("is_admin", True)
+		extras.setdefault("is_staff", False)
+		extras.setdefault("is_hod", False)
+		extras.setdefault("is_active", True)
+		extras.setdefault("is_admin", False)
 		extras.setdefault("is_superuser", True)
-
-
-		if extras.get('is_staff') is False:
-			raise ValueError("Super User must have all previliges.")
 		
-		return self._create_user(name, email, password, regdno, department, **extras)
+		user = self.create(
+			name = name,
+			email = self.normalize_email(email),
+			regdno = regdno,
+			department = department,
+			)
+		user.set_password(password)
+		user.save(using = self._db)
+		return user

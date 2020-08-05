@@ -1,4 +1,14 @@
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+class College(models.Model):
+	name =  models.CharField(max_length=225)
+	shortname = models.CharField(max_length=5)
+	location = models.CharField(max_length=120)
+
+	def __str__(self):
+		return self.name
 
 
 YEAR_CHOICES = (
@@ -9,6 +19,7 @@ YEAR_CHOICES = (
 	)
 
 class Department(models.Model):
+	college = models.ForeignKey(College, on_delete=models.CASCADE)
 	name = models.CharField("Department name", max_length=120)
 
 	def __str__(self):
@@ -41,3 +52,9 @@ class SectionSubjectFaculty(models.Model):
 
 	def __str__(self):
 		return "{} {} {}".format(self.section, self.subject, self.faculty)
+
+
+@receiver(post_save, sender=College)
+def post_save_college(self, instance, *args, **kwargs):
+	dept = Department.objects.create(name="Maintanece", college=instance.id)
+	dept.save()

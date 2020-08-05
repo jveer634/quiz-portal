@@ -8,7 +8,12 @@ from sections.models import Department, Section
 
 
 class User(AbstractUser, PermissionsMixin):
-	department = models.ForeignKey(Department, on_delete=models.CASCADE)
+	department = models.ForeignKey(
+		Department,
+		on_delete=models.CASCADE,
+		default=None, 
+		null=True
+		)
 	name = models.CharField(_("name"), max_length=100)
 	regdno = models.CharField(_("regd no"), max_length=30,unique = True)
 	email = models.EmailField(_("email"))
