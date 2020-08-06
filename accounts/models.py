@@ -1,40 +1,28 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
-from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from accounts.managers import UserManager
 
 from sections.models import Department, Section
 
+User = get_user_model()
 
-class User(AbstractUser, PermissionsMixin):
-	department = models.ForeignKey(
-		Department,
-		on_delete=models.CASCADE,
-		default=None, 
-		null=True
-		)
-	name = models.CharField(_("name"), max_length=100)
-	regdno = models.CharField(_("regd no"), max_length=30,unique = True)
-	email = models.EmailField(_("email"))
-	is_staff = models.BooleanField(default=False)
+class Staff(models.Model):
+	user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
 	is_hod = models.BooleanField(default=False)
-	is_admin = models.BooleanField(default=False)
-	is_active = models.BooleanField(default=False)
-	is_superuser = models.BooleanField(default=False)
-	
-	objects = UserManager()
+	department = models.ForeignKey(Department, on_delete=models.CASCADE)
+	regdno = models.CharField(max_length=20, unique=True)
 
-	USERNAME_FIELD = 'regdno'
-	REQUIRED_FIELDS = ['name', "email"]
-	
+	class Meta:
+		verbose_name_plural = "Staff"
 
 	def __str__(self):
-		return self.name
+		return "{} {}".format(self.user.first_name, self.user.last_name)
+
 
 class Student(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	section = models.OneToOneField(Section, on_delete=models.CASCADE)
 
 	def __str__(self):
-		return self.user.name
+		return "{} {}".format(self.user.first_name, self.user.last_name)

@@ -50,11 +50,14 @@ class SectionSubjectFaculty(models.Model):
 	subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
 	faculty = models.ForeignKey(User, on_delete=models.CASCADE)
 
+	class Meta:
+		verbose_name_plural = "Time Table"
+
 	def __str__(self):
 		return "{} {} {}".format(self.section, self.subject, self.faculty)
 
 
 @receiver(post_save, sender=College)
-def post_save_college(self, instance, *args, **kwargs):
-	dept = Department.objects.create(name="Maintanece", college=instance.id)
+def post_save_college(sender, instance, *args, **kwargs):
+	dept = Department.objects.create(name="Maintanece", college=instance)
 	dept.save()

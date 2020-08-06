@@ -44,9 +44,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-AUTH_USER_MODEL = "accounts.User"
-
-
 ROOT_URLCONF = 'quizapp.urls'
 
 TEMPLATES = [

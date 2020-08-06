@@ -1,12 +1,13 @@
 from django import forms
-from accounts.models import User
 
-class UserCreationForm(forms.ModelForm):
-	class Meta:
-		model = User
-		fields = ['name', 'email', 'regdno', 'department']
+from accounts.models import Staff, Student
 
-class UserChangeForm(forms.ModelForm):
+class StaffCreationForm(forms.ModelForm):
 	class Meta:
-		model = User
-		fields = ['name', 'email', 'regdno']
+		model = Staff
+		fields = '__all__'
+
+class StaffChangeForm(forms.ModelForm):
+	class Meta:
+		model = Staff
+		fields = '__all__'
